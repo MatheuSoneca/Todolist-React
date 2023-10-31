@@ -24,6 +24,10 @@ export function Home() {
     setTaskName("")
   }
 
+  const createTaskRemover = (taskId) => () => {
+    setTasks((prevState) => prevState.filter((task) => task.id !== taskId))
+  }
+
   return (
     <div className="container">
       <header>
@@ -44,7 +48,11 @@ export function Home() {
         </div>
         <div className="tasks">
           {tasks.map((task) => (
-            <Taskbar key={task.id} name={task.name} />
+            <Taskbar
+              key={task.id}
+              name={task.name}
+              onClick={createTaskRemover(task.id)}
+            />
           ))}
         </div>
       </main>

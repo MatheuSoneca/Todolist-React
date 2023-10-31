@@ -18,3 +18,19 @@
 .taskbar strong {
   font-size: 18px;
 }
+
+.closeButton {
+  background-color: gray;
+  border: 1px solid black;
+  border-radius: 5px;
+  height: 2rem;
+  width: 2.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.closeButton strong {
+  font-size: 26px;
+}
