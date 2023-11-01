@@ -1,32 +1,24 @@
-import React, { useEffect, useState } from "react"
-import "./styles.css"
+import React, { useState } from "react";
+import "./styles.css";
 
 //components
-import { Taskbar } from "../../components/Taskbar/index.jsx"
+import { Taskbar } from "../../components/Taskbar/index.jsx";
 
 // hooks
-import { useUniqueID } from "../../hooks/useUniqueID"
+import { useTasks } from "../../hooks/useTasks";
 
 export function Home() {
-  const [tasks, setTasks] = useState([])
-  const [taskName, setTaskName] = useState("")
-  const generateUniqueID = useUniqueID()
+  const { tasks, createTask, removeTask, loading } = useTasks();
+  const [taskName, setTaskName] = useState("");
 
   const addTask = () => {
-    if (taskName.trim() === "") return
+    if (taskName.trim() === "") return;
 
-    const newTask = {
-      name: taskName,
-      id: generateUniqueID(),
-    }
+    createTask(taskName);
+    setTaskName("");
+  };
 
-    setTasks((prevState) => [...prevState, newTask])
-    setTaskName("")
-  }
-
-  const createTaskRemover = (taskId) => () => {
-    setTasks((prevState) => prevState.filter((task) => task.id !== taskId))
-  }
+  const createTaskRemover = (taskId) => () => removeTask(taskId);
 
   return (
     <div className="container">
@@ -46,16 +38,20 @@ export function Home() {
             <h4>Adicionar</h4>
           </button>
         </div>
-        <div className="tasks">
-          {tasks.map((task) => (
-            <Taskbar
-              key={task.id}
-              name={task.name}
-              onClick={createTaskRemover(task.id)}
-            />
-          ))}
-        </div>
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          <div className="tasks">
+            {tasks.map((task) => (
+              <Taskbar
+                key={task.id}
+                name={task.text}
+                onClick={createTaskRemover(task.id)}
+              />
+            ))}
+          </div>
+        )}
       </main>
     </div>
-  )
+  );
 }
